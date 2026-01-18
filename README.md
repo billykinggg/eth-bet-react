@@ -2,6 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Etherscan API Key
+
+To fetch data from the Etherscan API, you need to provide an API key.
+
+1.  Go to [https://etherscan.io/myapikey](https://etherscan.io/myapikey) and create an account to get your API key.
+2.  Create a file named `.env` in the `eth-lottery-react` root directory.
+3.  Add the following line to the `.env` file, replacing `YourApiKey` with your actual Etherscan API key:
+
+    ```
+    REACT_APP_ETHERSCAN_API_KEY=YourApiKey
+    ```
+
 ## Available Scripts
 
 In the project directory, you can run:

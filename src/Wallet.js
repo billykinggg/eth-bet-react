@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import web3 from './web3';
 import { Card, Button } from 'react-bootstrap';
+import Header from './Header';
 import { Link } from 'react-router-dom';
 
 const Wallet = ({ onAccountChanged }) => {
@@ -56,36 +57,39 @@ const Wallet = ({ onAccountChanged }) => {
   }, []);
 
   return (
-    <div className="d-flex justify-content-center my-4">
-      <Card style={{ width: '33rem' }} className="text-center">
-        <Card.Header as="h5">Wallet Information</Card.Header>
-        <Card.Body>
-          {account ? (
-            <div>
-              <Card.Title>Connected Account</Card.Title>
-              <Card.Text>
-                <strong>Address:</strong> {account}
-              </Card.Text>
-              <Card.Text>
-                <strong>Balance:</strong> {accountBalance ? parseFloat(accountBalance).toFixed(4) : '0.0000'} ETH
-              </Card.Text>
-            </div>
-          ) : (
-            <div>
-              <Card.Title>Not Connected</Card.Title>
-              <Card.Text>
-                Please connect your wallet to continue.
-              </Card.Text>
-              <Button variant="primary" onClick={() => connectWallet()}>Connect Wallet</Button>
-            </div>
-          )}
-        </Card.Body>
-        <Card.Footer>
-            <Link to="/">
-                <Button variant="secondary">Back to Main Page</Button>
-            </Link>
-        </Card.Footer>
-      </Card>
+    <div className="container mt-5">
+      <Header />
+      <div className="my-4">
+        <Card className="text-center">
+          <Card.Header as="h5">Wallet Information</Card.Header>
+          <Card.Body>
+            {account ? (
+              <div>
+                <Card.Title>Connected Account</Card.Title>
+                <Card.Text>
+                  <strong>Address:</strong> {account}
+                </Card.Text>
+                <Card.Text>
+                  <strong>Balance:</strong> {accountBalance ? parseFloat(accountBalance).toFixed(4) : '0.0000'} ETH
+                </Card.Text>
+              </div>
+            ) : (
+              <div>
+                <Card.Title>Not Connected</Card.Title>
+                <Card.Text>
+                  Please connect your wallet to continue.
+                </Card.Text>
+                <Button variant="primary" onClick={() => connectWallet()}>Connect Wallet</Button>
+              </div>
+            )}
+          </Card.Body>
+          <Card.Footer>
+              <Link to="/">
+                  <Button variant="secondary">Back to Main Page</Button>
+              </Link>
+          </Card.Footer>
+        </Card>
+      </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import Wallet from './Wallet';
+import Etherscan from './Etherscan';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -12,7 +13,8 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/page2" element={<Wallet />} />
+        <Route path="/Wallet" element={<Wallet />} />
+        <Route path="/Etherscan" element={<Etherscan />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

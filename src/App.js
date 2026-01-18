@@ -6,7 +6,7 @@ import chainlink from './chainlink';
 import ethbet from './ethbet';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import PriceChart from './PriceChart';
-import { Link } from "react-router-dom";
+import Header from './Header';
 
 class App extends Component {
   constructor(props) {
@@ -22,6 +22,7 @@ class App extends Component {
       ethbetValue: '0.001',
       ethbetBetValue: '',
       ethbetMessage: '',
+      walletMessage: '',
       ethbetPlayersList: [],
       ethbetPlayerBetsList: { players: [], bets: [] },
       theme: 'light'
@@ -76,17 +77,23 @@ class App extends Component {
   }
 
   connectWallet = async (silently = false) => {
+    if (typeof window.ethereum === 'undefined') {
+      this.setState({ walletMessage: 'Please install MetaMask to use this app.' });
+      return;
+    }
     try {
       const accounts = await (silently ? web3.eth.getAccounts() : window.ethereum.request({ method: 'eth_requestAccounts' }));
       if (accounts.length > 0) {
         const account = accounts[0];
         const balance = await web3.eth.getBalance(account);
-        this.setState({ account, accountBalance: web3.utils.fromWei(balance, 'ether') });
+        this.setState({ account, accountBalance: web3.utils.fromWei(balance, 'ether'), walletMessage: '' });
+      } else if (!silently) {
+        this.setState({ walletMessage: 'Please connect to MetaMask.' });
       }
     } catch (error) {
       if (!silently) {
         console.error("Error connecting to MetaMask", error);
-        this.setState({ message: 'Failed to connect wallet.' });
+        this.setState({ walletMessage: 'Failed to connect wallet.' });
       }
     }
   };
@@ -192,24 +199,7 @@ class App extends Component {
 
     return (
       <div className={`container mt-5 ${theme === 'dark' ? 'text-white' : ''}`}>
-        <nav className="d-flex justify-content-between align-items-center mb-4">
-          <div>
-            <Link to="/" className={linkClass}>Home</Link> | <Link to="/page2" className={linkClass}>Wallet Information</Link>
-          </div>
-          <div className={`d-flex align-items-center`}>
-            <button className={`btn ${theme === 'dark' ? 'btn-light' : 'btn-dark'} me-3`} onClick={this.toggleTheme}>
-              {theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-            </button>
-            {this.state.account ? (
-              <div className="text-end">
-                <span className="d-block"><strong>Wallet:</strong> {this.state.account.substring(0, 6)}...{this.state.account.substring(this.state.account.length - 4)}</span>
-                <span className="d-block"><strong>Balance:</strong> {parseFloat(this.state.accountBalance).toFixed(4)} ETH</span>
-              </div>
-            ) : (
-              <button className="btn btn-outline-primary" onClick={() => this.connectWallet()}>Connect Wallet</button>
-            )}
-          </div>
-        </nav>
+        <Header />
         <div className={`card shadow mt-4 ${cardClass}`}>
           <div className="card-body">
             <div className="text-center mb-4">
